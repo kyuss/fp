@@ -1,3 +1,7 @@
+## About
+
+Filepicker CLI upload tool enables you to easily upload your files and get uniqe url (FileLink) for each on of them. Url is also automatically copied to your clipboard so you can start using it immediately.
+
 ## Installation
 
 ### From binary
