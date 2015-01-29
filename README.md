@@ -19,6 +19,7 @@ and put it in your $PATH
 ```
 go get github.com/atotto/clipboard
 go get github.com/briandowns/spinner
+go get code.google.com/p/gcfg
 go build
 ```
 
