@@ -4,9 +4,9 @@
 
 Just download one of the binaries:
 
-[Darwin x86_64](bin/darwin_x86_64/fp)
+[Darwin x86_64](https://github.com/Ink/fp/blob/master/bin/darwin_x86_64/fp?raw=true)
 
-[Linux x86_64](bin/linux_x86_64/fp)
+[Linux x86_64](https://github.com/Ink/fp/blob/master/bin/linux_x86_64/fp?raw=true)
 
 and put it in your $PATH
 
