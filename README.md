@@ -40,8 +40,18 @@ apikey = YOUR_API_KEY_HERE
 
 ## Usage
 
+### Single file upload
+
 ```
 fp /path/to/your/file
 ```
 
 ![alt tag](https://www.filepicker.io/api/file/sQ1ZcmLUTcuterQQpGpv/convert?w=800)
+
+### Directory upload (recursive)
+
+```
+fp -d /path/to/your/directory
+```
+
+![alt tag](https://www.filepicker.io/api/file/xhqP3vNgTfO0yxu1MvC6/convert?w=800)

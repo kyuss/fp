@@ -23,6 +23,7 @@ const (
 
 var (
 	IS_SILENT bool
+	DIR string
 )
 
 type Config struct {
@@ -33,6 +34,7 @@ type Config struct {
 
 func init() {
 	flag.BoolVar(&IS_SILENT, "s", false, "Silent (Don't show spinner)")
+	flag.StringVar(&DIR,"d","", "Upload files in directory" )
 	flag.Parse()
 
 }
@@ -49,15 +51,33 @@ func main() {
 		os.Exit(1)
 	}
 
-	filePath := os.Args[len(os.Args)-1]
+	path := os.Args[len(os.Args)-1]
 
-	err = store(filePath, config.Filepicker.ApiKey)
+	if DIR == "" {
+		err = store(path, config.Filepicker.ApiKey, true)
 
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+	} else {
+		err = filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
+			mode := f.Mode()
+			if !mode.IsDir() {
+				return store(path, config.Filepicker.ApiKey, false)
+			}
+
+			return nil
+		})
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	}
 }
+
 
 func escapeFilename(filename string) (string, error) {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
@@ -68,7 +88,7 @@ func escapeFilename(filename string) (string, error) {
 }
 
 
-func store(filePath string, apikey string) error {
+func store(filePath string, apikey string, useClipboard bool) error {
 	filename, err := escapeFilename(filePath)
 
 	url := fmt.Sprintf("%s?key=%s&filename=%s", FILEPICKER_URI, apikey, filename)
@@ -102,9 +122,13 @@ func store(filePath string, apikey string) error {
 
 	var result Result
 	unmarshall(body.Bytes(), &result)
-	clipboard.WriteAll(result.Url)
 
-	fmt.Printf("%s [in clipboard]\n", result.Url)
+	if useClipboard {
+		clipboard.WriteAll(result.Url)
+		fmt.Printf("%s [in clipboard]\n", result.Url)
+	} else {
+		fmt.Printf("%s -> %s\n", result.Url, filePath)
+	}
 
 
 	if !IS_SILENT {
